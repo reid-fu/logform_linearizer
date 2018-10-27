@@ -1,9 +1,12 @@
 package feat_extract;
 import org.jdom2.Element;
 
+import main.Exceptions.InvalidWordIDException;
+
 public class WordFeatParser {
-	/** @return Feature set for word with passed ID. If word doesn't yet have feature set, creates one for it and parses its features. */
-	public WordFeatures getWordFeatures(LogicalForm lf, String wordID, Element wordXML, WordInfoMap wordInfoMap) {
+	/** @return Feature set for word with passed ID. If word doesn't yet have feature set, creates one for it and parses its features. 
+	 * @throws InvalidWordIDException */
+	public WordFeatures getWordFeatures(LogicalForm lf, String wordID, Element wordXML, WordInfoMap wordInfoMap) throws InvalidWordIDException {
 		String wordNE = wordID.contains(":") ? wordID.substring(wordID.indexOf(':') + 1) : null;
 		wordID = wordID.contains(":") ? wordID.substring(0, wordID.indexOf(':')) : wordID;
 		WordFeatures featSet = lf.getWordFeatures(wordID);
@@ -25,8 +28,10 @@ public class WordFeatParser {
 		}
 	}
 	/** Handles word ID's following regex "w[0-9]+(:[A-Z]+)?" or "h[0-9]+"<br/>
-	* Adds at least following features: PN, PT, FO, NA */
-	public void parseWordFeatures(LogicalForm lf, WordFeatures wordFeats, Element xmlNode, String id, String wordNE, WordInfoMap wordInfoMap) {
+	* Adds at least following features: PN, PT, FO, NA 
+	 * @throws InvalidWordIDException */
+	public void parseWordFeatures(LogicalForm lf, WordFeatures wordFeats, Element xmlNode,
+			String id, String wordNE, WordInfoMap wordInfoMap) throws InvalidWordIDException {
 		String wordID = id; //wordNE is word's named entity category		
 		wordFeats.addFeature("id", wordID);
 		wordFeats.addFeature("PN", getLemma(xmlNode, wordID, wordInfoMap));
@@ -40,7 +45,7 @@ public class WordFeatParser {
 		addMorphologicalFeatures(wordFeats, xmlNode);
 		addNumChildrenFeatures(wordFeats, xmlNode);
 	}
-	public String getLemma(Element xmlNode, String id, WordInfoMap wordInfoMap) {
+	public String getLemma(Element xmlNode, String id, WordInfoMap wordInfoMap) throws InvalidWordIDException {
 		String lemma = wordInfoMap.getLemma(id);
 		if(lemma == null || lemma.equals("null")) {
 			lemma = xmlNode.getAttributeValue("pred");

@@ -1,6 +1,6 @@
 package feat_extract;
 
-/** Contains supertag, POS, and lemma for some word */
+/** Contains lemma, POS, and gold supertag for some word */
 public class WordInfo {
 	private String supertag;
 	private String pos;

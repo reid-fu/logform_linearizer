@@ -1,8 +1,9 @@
 package feat_extract;
+import main.Exceptions.InvalidWordIDException;
 
 public class ParentChildParser {	
 	public void exchangeFeatures(LogicalForm lf, WordFeatures parent,
-			WordFeatures child, WordInfoMap wordInfo, String relation) {
+			WordFeatures child, WordInfoMap wordInfo, String relation) throws InvalidWordIDException {
 		if(parent.equals(WordFeatures.HEAD) || parent.getUniqueFeature("id").startsWith("x")) { // parent is HEAD or X node
 			child.addFeature("RN", "NULL");
 		} else if(child.getUniqueFeature("id").startsWith("w")) {

@@ -2,6 +2,12 @@ package main;
 
 @SuppressWarnings("serial")
 public class Exceptions {
+	public static class InvalidWordIDException extends Exception {
+		public InvalidWordIDException(String sentence, String wordID) {
+			super("Word ID " + wordID + " not found for sentence \"" + sentence + "\"");
+		}
+	}
+	
 	public static abstract class CCGXMLParseException extends Exception {
 		private String sentence;
 		private String reason;

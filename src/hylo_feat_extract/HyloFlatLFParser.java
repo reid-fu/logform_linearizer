@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Set;
 
 import feat_extract.*;
+import main.Exceptions.InvalidWordIDException;
+import main.Exceptions.NoPredicatesException;
 import opennlp.ccg.hylo.HyloHelper;
 import opennlp.ccg.hylo.Nominal;
 import opennlp.ccg.hylo.Op;
@@ -20,9 +22,14 @@ public class HyloFlatLFParser {
 	private List<HyloRel> relations;
 	private WordInfoMap wordInfoMap;
 	
-	public LogicalForm parse(List<SatOp> preds) {
+	public LogicalForm parse(List<SatOp> preds) throws InvalidWordIDException {
 		relations = new ArrayList<>();
-		wordInfoMap = new WordInfoMap(null);
+		try {
+			wordInfoMap = new WordInfoMap(null);
+		} catch (NoPredicatesException e) {
+			// Shouldn't happen
+			e.printStackTrace();
+		}
 		
 		LogicalForm lf = new LogicalForm(null);
 		Map<String,List<SatOp>> nomPredMap = getNomPredMap(preds);
@@ -49,7 +56,7 @@ public class HyloFlatLFParser {
 			lf.addWordFeatures(wordID, wordFeats);
 		}
 	}
-	public void processRels(LogicalForm lf) {
+	public void processRels(LogicalForm lf) throws InvalidWordIDException {
 		for(HyloRel relation : relations) {
 			WordFeatures parent = lf.getWordFeatures(relation.parent);
 			if(parent == null) {

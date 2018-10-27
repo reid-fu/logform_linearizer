@@ -12,7 +12,7 @@ public class LogicalFormParser {
 	private WordFeatParser wordFeatParser = new WordFeatParser();
 	private ParentChildParser parentChildParser = new ParentChildParser();
 	
-	public LogicalForm parse(String sentence, Element lf, WordInfoMap wordInfoMap) throws CCGXMLParseException {
+	public LogicalForm parse(String sentence, Element lf, WordInfoMap wordInfoMap) throws CCGXMLParseException, InvalidWordIDException {
 		assert lf.getName().equals("lf");		
 		LogicalForm parse = new LogicalForm(sentence);
 		List<Relation> queue = new ArrayList<>();

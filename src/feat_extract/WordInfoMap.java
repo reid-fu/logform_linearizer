@@ -5,14 +5,25 @@ import java.util.Map;
 import java.util.Set;
 import org.jdom2.Element;
 
-import main.Exceptions.NoPredicatesException;
+import main.Exceptions.*;
 
+/** Contains lemmas, POS tags, and gold supertags for each predicate word in sentence.
+ * Predicate words are those present in logical form, as opposed to certain function words
+ * and punctuation, which are omitted from logical form. This data structure uses word ID
+ * in logical form to map words. */
 public class WordInfoMap {
 	private String sentence;
+	/** Mapping from word's ID in logical form to its lemma, POS, and gold supertag */
 	private Map<String, WordInfo> wordPreds = new HashMap<>();
 	
-	public WordInfoMap(String sentence) {
-		this.sentence = sentence;
+	/** @param item XML element representing sentence, which includes "lf" and "pred-info" children 
+	 * @throws NoPredicatesException */
+	public WordInfoMap(Element item) throws NoPredicatesException {
+		if(item != null) {
+			Element predInfo = item.getChild("pred-info");
+			sentence = item.getAttributeValue("string");
+			parse(predInfo);
+		}
 	}
 	
 	public void parse(Element predInfo) throws NoPredicatesException {
@@ -42,17 +53,22 @@ public class WordInfoMap {
 	public String getSentence() {
 		return sentence;
 	}
-	public String getSupertag(String wordID) {
-		if(wordPreds.get(wordID) == null) {
-			System.err.println("No supertag for word ID " + wordID);
+	public WordInfo getWordInfo(String wordID) throws InvalidWordIDException {
+		WordInfo wordInfo = wordPreds.get(wordID);
+		if(wordInfo == null) {
+			throw new InvalidWordIDException(sentence, wordID);
+		} else {
+			return wordInfo;
 		}
-		return wordPreds.get(wordID).getSupertag();
 	}
-	public String getPOS(String wordID) {
-		return wordPreds.get(wordID).getPos();
+	public String getSupertag(String wordID) throws InvalidWordIDException {
+		return getWordInfo(wordID).getSupertag();
 	}
-	public String getLemma(String wordID) {
-		return wordPreds.get(wordID).getLemma();
+	public String getPOS(String wordID) throws InvalidWordIDException {
+		return getWordInfo(wordID).getPos();
+	}
+	public String getLemma(String wordID) throws InvalidWordIDException {
+		return getWordInfo(wordID).getLemma();
 	}
 	/** @return word ID's in lexical order
 	 * Mainly used for debugging */

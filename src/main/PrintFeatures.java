@@ -15,6 +15,7 @@ import feat_extract.*;
 import feat_print.AnnotSeqPrinter;
 import linearizer.*;
 import main.Exceptions.CCGXMLParseException;
+import main.Exceptions.InvalidWordIDException;
 
 public class PrintFeatures {
 	public static final String DATA_DIR = "/home/reid/projects/research/ccg/openccg/ccgbank/extract/test";
@@ -28,7 +29,7 @@ public class PrintFeatures {
 	public static final String[] TEST_PART = {"23"};
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static void main(String[] args) throws JDOMException, IOException {
+	public static void main(String[] args) throws Exception {
 		List<Element> trainData = new LinkedList<>();
 		List<Element> devData = new LinkedList<>();
 		List<Element> testData = new LinkedList<>();
@@ -63,7 +64,7 @@ public class PrintFeatures {
 			data.addAll(fileData);
 		}
 	}
-	public static void writeFeatures(List<Element>[] data, Linearizer linearizer, LinConfig config) throws IOException {
+	public static void writeFeatures(List<Element>[] data, Linearizer linearizer, LinConfig config) throws IOException, InvalidWordIDException {
 		for(int i = 0;i < OUTPUT_FILES.length;i++) {
 			AnnotSeqPrinter printer = new AnnotSeqPrinter(OUTPUT_FILES[i], SENT_FILES[i]);
 			Set<String> uniqueSentences = new HashSet<>();
@@ -72,14 +73,12 @@ public class PrintFeatures {
 			
 			for(Element item : data[i]) {
 				try {
-					Element predInfo = item.getChild("pred-info");
-					Element lf = item.getChild("lf");
 					String sent_text = item.getAttributeValue("string");
 					if(!uniqueSentences.add(sent_text))
 						numDuplicates++;
-					WordInfoMap wordInfo = new WordInfoMap(sent_text);					
-					wordInfo.parse(predInfo);
+					WordInfoMap wordInfo = new WordInfoMap(item);
 					
+					Element lf = item.getChild("lf");
 					LogicalFormParser parser = new LogicalFormParser();
 					LogicalForm sentence = parser.parse(sent_text, lf, wordInfo);
 					List<String> linOrder = linearizer.getOrder(sentence, sentence.getHead(), new HashSet<String>(), config);
