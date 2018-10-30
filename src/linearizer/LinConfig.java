@@ -1,5 +1,7 @@
 package linearizer;
 
+import linearizer.eng_heuristic.ChildOrders;
+
 /** Linearization configuration object */
 public class LinConfig {
 	private String featOrderName;

@@ -9,6 +9,8 @@ import feat_extract.LogicalForm;
 import feat_extract.LogicalFormParser;
 import feat_extract.WordInfoMap;
 import feat_extract.XMLFileLoader;
+import feat_print.AnnotSeqPrinter;
+import linearizer.eng_heuristic.ChildOrders;
 import main.Exceptions.CCGXMLParseException;
 
 public class EngLinIntegTest {
@@ -22,6 +24,7 @@ public class EngLinIntegTest {
 	public void numMatches() throws Exception {
 		List<Element> logForms = loader.logicalForms(TEST_DIR);
 		LogicalFormParser parser = new LogicalFormParser();
+		AnnotSeqPrinter printer = new AnnotSeqPrinter();
 		int exactMatches = 0;
 		List<String> nonmatches = new ArrayList<>();
 		
@@ -37,8 +40,8 @@ public class EngLinIntegTest {
 				
 				if(engOrder.equals(oracleOrder)) {
 					exactMatches++;
-				} else if(nonmatches.size() < 5) {
-					nonmatches.add(sent_text + "\t" + engOrder);
+				} else if(nonmatches.size() < 30) {
+					nonmatches.add(sent_text + "\t\t" + printer.wordsInOrderOfID(sentence, engOrder));
 				}
 			} catch (CCGXMLParseException e) {
 				e.printSkipMessage();

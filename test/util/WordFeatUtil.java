@@ -2,6 +2,11 @@ package util;
 import feat_extract.WordFeatures;
 
 public class WordFeatUtil {
+	public static WordFeatures wordFeaturesWithID(String id) {
+		WordFeatures wordFeats = new WordFeatures();
+		wordFeats.addFeature("id", id);
+		return wordFeats;
+	}
 	public static void addFeatures(WordFeatures wordFeats, String...feats) {
 		assert feats.length % 2 == 0;
 		for(int i = 0; i < feats.length; i+=2) {

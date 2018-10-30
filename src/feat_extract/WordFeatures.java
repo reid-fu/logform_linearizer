@@ -27,6 +27,9 @@ public class WordFeatures {
 			features.put(feature, vals);
 		}
 	}
+	public boolean hasFeature(String feature) {
+		return features.containsKey(feature);
+	}
 	public List<String> getFeature(String feature) {
 		return features.get(feature);
 	}

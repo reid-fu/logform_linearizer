@@ -13,7 +13,7 @@ import feat_extract.WordFeatures;
 import util.WordFeatUtil;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestLinearizer {
+public class LinTest {
 	@Mock
 	private LogicalForm lf;
 	private Linearizer uut = new DFSLinearizer();

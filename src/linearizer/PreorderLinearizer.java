@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import feat_extract.LogicalForm;
 import feat_extract.WordFeatures;
+import linearizer.eng_heuristic.ChildOrders;
 
 public class PreorderLinearizer extends Linearizer {
 	private static final String[] CHILD_ORDER = ChildOrders.ENG_CHILD_ORDER;

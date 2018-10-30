@@ -7,6 +7,7 @@ import feat_extract.LogicalForm;
 import feat_extract.WordFeatures;
 
 public abstract class Linearizer {
+	/** @return Order of word ID's based on linearization */
 	public List<String> getOrder(LogicalForm lf, WordFeatures current, Set<String> visited, LinConfig config) {
 		List<String> order = order(lf, current, visited, config);
 		if(config.relSeq()) {
@@ -43,6 +44,7 @@ public abstract class Linearizer {
 			}
 		}
 	}
+	/** Puts parentheses around linearization sequences that represent subtrees of size k or more, where k depends on config */
 	public void maybeAddParens(WordFeatures current, LinConfig config, List<String> order) {
 		int parenSubtreeSize = config.parenSubtreeSize();
 		if(parenSubtreeSize > 0 && current.getSubtreeSize() >= parenSubtreeSize) {
