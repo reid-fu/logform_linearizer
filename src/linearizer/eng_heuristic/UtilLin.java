@@ -39,6 +39,8 @@ public class UtilLin {
 			int lowBound = Integer.parseInt(size_range.substring(0, size_range.indexOf("-")));
 			int highBound = Integer.parseInt(size_range.substring(size_range.indexOf("-") + 1));
 			children.removeIf(feats -> feats.getSubtreeSize() >= lowBound && feats.getSubtreeSize() <= highBound);
+			if(children.size() == 0)
+				current.getChildren().remove(rel);
 		}
 	}
 	/** @param lf Logical form

@@ -40,7 +40,7 @@ public class EngLinIntegTest {
 				
 				if(engOrder.equals(oracleOrder)) {
 					exactMatches++;
-				} else if(nonmatches.size() < 30) {
+				} else if(nonmatches.size() < 50) {
 					nonmatches.add(sent_text + "\t\t" + printer.wordsInOrderOfID(sentence, engOrder));
 				}
 			} catch (CCGXMLParseException e) {
@@ -48,7 +48,11 @@ public class EngLinIntegTest {
 			}
 		}
 		System.out.println("Exact matches: " + exactMatches);
-		for(String nonmatch : nonmatches)
+		@SuppressWarnings("unused")
+		int numPrinted = 0;
+		for(String nonmatch : nonmatches.subList(30, 50)) {
 			System.out.println(nonmatch);
+			numPrinted++;
+		}
 	}
 }
