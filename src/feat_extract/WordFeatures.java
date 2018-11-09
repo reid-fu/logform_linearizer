@@ -74,6 +74,19 @@ public class WordFeatures {
 	public Map<String, List<WordFeatures>> getChildren() {
 		return children;
 	}
+	/** @return List of child words related to parents through relation rel. Null if no such children. */
+	public List<WordFeatures> getChildren(String rel, boolean includeRefs) {
+		List<WordFeatures> nonrefs = children.get(rel);
+		if(nonrefs == null)
+			return null;
+		
+		List<WordFeatures> list = new ArrayList<>(nonrefs);
+		List<WordFeatures> refs = children.get(rel + LogicalForm.REF_MARKER);
+		
+		if(includeRefs && refs != null)
+			list.addAll(refs);
+		return list;
+	}
 	/** @return list of children not backed up by children map */
 	public List<WordFeatures> getChildList() {
 		List<WordFeatures> childList = new ArrayList<>();

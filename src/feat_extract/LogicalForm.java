@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class LogicalForm {
+	public static final String REF_MARKER = "{REF}";
 	private String sentence;
 	private Map<String, WordFeatures> featureMap;
 	private Map<String, String> supertags;

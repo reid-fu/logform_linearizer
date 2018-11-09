@@ -12,6 +12,7 @@ import feat_extract.LogicalForm;
 import feat_extract.WordFeatures;
 import linearizer.eng_heuristic.ChildOrders;
 
+@Deprecated
 public class PreorderLinearizer extends Linearizer {
 	private static final String[] CHILD_ORDER = ChildOrders.ENG_CHILD_ORDER;
 	
@@ -42,7 +43,7 @@ public class PreorderLinearizer extends Linearizer {
 		for(int i = 0; i < CHILD_ORDER.length; i++) {
 			String rel_type = CHILD_ORDER[i].contains(":") ? CHILD_ORDER[i].substring(0, CHILD_ORDER[i].indexOf(":")) : CHILD_ORDER[i];
 			String size_range = CHILD_ORDER[i].contains(":") ? CHILD_ORDER[i].substring(CHILD_ORDER[i].indexOf(":") + 1) : null;
-			List<WordFeatures> children = current.getChildren().get(rel_type);
+			List<WordFeatures> children = current.getChildren(rel_type, false);
 			
 			// Filter out children outside of size range, if size range is specified
 			int lowBound = (size_range == null) ? 0 : Integer.parseInt(size_range.substring(0, size_range.indexOf("-")));

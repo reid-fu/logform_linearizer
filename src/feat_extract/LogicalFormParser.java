@@ -20,31 +20,23 @@ public class LogicalFormParser {
 		
 		while(!queue.isEmpty()) {
 			Relation r = queue.remove(0);
-			String wordID = getWordID(r.getChildXML());
+			boolean ref = r.getChildXML().getAttributeValue("idref") != null;
+			String wordID = ref ? r.getChildXML().getAttributeValue("idref") : r.getChildXML().getAttributeValue("id");
+			
 			WordFeatures wordFeats = wordFeatParser.getWordFeatures(parse, wordID, r.getChildXML(), wordInfoMap);
 			wordID = wordID.contains(":") ? wordID.substring(0, wordID.indexOf(':')) : wordID;
 			parse.addWordFeatures(wordID, wordFeats);
 			
 			if(r.getParentFeats() != WordFeatures.CCONJ) {
 				parentChildParser.exchangeFeatures(parse, r.getParentFeats(), wordFeats, wordInfoMap, r.getName());
-				r.getParentFeats().addChild(r.getName(), wordFeats);
-				wordFeats.addParent(r.getName(), r.getParentFeats());
+				String relName = ref ? r.getName() + LogicalForm.REF_MARKER : r.getName();
+				r.getParentFeats().addChild(relName, wordFeats);
+				wordFeats.addParent(relName, r.getParentFeats());
 			}
 			addChildrenToQueue(queue, r.getChildXML(), wordFeats);
 		}
 		updateSubtreeSizes(parse);
 		return parse;
-	}
-	/** @return Word ID associated with passed node. Could be node's "id" attribute or "idref" attribute. If neither attribute exists, returns null. */
-	public String getWordID(Element node) {
-		String wordID = node.getAttributeValue("idref");
-		if(wordID == null) {
-			wordID = node.getAttributeValue("id");
-		}
-		if(wordID == null) {
-			return null;
-		}
-		return wordID;
 	}
 	/** If parent has "node" children, then parent is either HEAD node or coordinating conjunction.
 	 * If parent is "lf" node, add nameless relations between dummy HEAD node and root words of sentence.
