@@ -2,6 +2,7 @@ package linearizer.pattern_matching;
 import java.util.List;
 import main.Exceptions.NoMoodException;
 import feat_extract.LogicalForm;
+import feat_extract.WFUtil;
 import feat_extract.WordFeatures;
 
 public class SentTypeDeterminer {
@@ -16,7 +17,7 @@ public class SentTypeDeterminer {
 	 * @throws NoMoodException if lf root has no "mood" attribute
 	 */
 	public static SentType sentType(LogicalForm lf) throws NoMoodException {
-		List<WordFeatures> roots = lf.getHead().getChildList();
+		List<WordFeatures> roots = WFUtil.getChildList(lf.getHead(), true);
 		if(roots.size() != 1)
 			return null;
 		WordFeatures root = roots.get(0);

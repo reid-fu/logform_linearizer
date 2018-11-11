@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import feat_extract.LogicalForm;
+import feat_extract.WFUtil;
 import feat_extract.WordFeatures;
 import linearizer.pattern_matching.SentTypeDeterminer.SentType;
 import main.Exceptions.NoMoodException;
@@ -34,9 +35,7 @@ public class ArgSeparator {
 	
 	public Map<String,WordFeatures> verbAndArgsDcl(LogicalForm lf) {
 		Map<String,WordFeatures> verbAndArgs = new HashMap<>();
-		WordFeatures root = lf.getHead().getChildList().get(0);
-		Set<String> visited = new HashSet<>();
-		visited.add(root.getUniqueFeature("id"));
+		WordFeatures root = WFUtil.getChildList(lf.getHead(), true).get(0);
 		
 		boolean auxVerb = ArgUtil.isAuxVerb(root);
 		if(auxVerb) {
@@ -45,25 +44,20 @@ public class ArgSeparator {
 			verbAndArgs.put(VERB_KEY, root);
 		}
 		
-		addVerbArguments(verbAndArgs, root, visited);
+		addVerbArguments(verbAndArgs, root);
 		if(auxVerb) {
 			WordFeatures mainVerb = ArgUtil.mainVerb(root);
 			verbAndArgs.values().remove(mainVerb);
 			verbAndArgs.put(VERB_KEY, mainVerb);
-			addVerbArguments(verbAndArgs, mainVerb, visited);
+			addVerbArguments(verbAndArgs, mainVerb);
 		}
 		return verbAndArgs;
 	}
-	/** Adds child subtrees of verb to verbAndArgs, skipping subtrees that have been added already */
-	private void addVerbArguments(Map<String,WordFeatures> verbAndArgs, WordFeatures verb, Set<String> visited) {
-		for(String rel : verb.getChildren().keySet()) {
+	/** Adds child subtrees of verb to verbAndArgs */
+	private void addVerbArguments(Map<String,WordFeatures> verbAndArgs, WordFeatures verb) {
+		for(String rel : WFUtil.getChildRels(verb, false)) {
 			int childCounter = 1;
-			for(WordFeatures child : verb.getChildren().get(rel)) {
-				String id = child.getUniqueFeature("id");
-				if(visited.contains(id))
-					continue;				
-				visited.add(id);
-				
+			for(WordFeatures child : WFUtil.getChildren(verb, rel, false)) {
 				if(verbAndArgs.containsKey(rel)) {
 					while(verbAndArgs.containsKey(rel + "." + childCounter))
 						childCounter++;

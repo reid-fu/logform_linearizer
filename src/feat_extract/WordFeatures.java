@@ -1,8 +1,10 @@
 package feat_extract;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class WordFeatures {
 	public static final WordFeatures HEAD = new WordFeatures();
@@ -10,11 +12,12 @@ public class WordFeatures {
 	static {
 		HEAD.addFeature("id", "HEAD");
 		HEAD.addFeature("PN", "NULL");
-	}
-	
+	}	
 	private Map<String, List<String>> features = new HashMap<>();
 	private Map<String, List<WordFeatures>> parents = new HashMap<>();
 	private Map<String, List<WordFeatures>> children = new HashMap<>();
+	private Set<String> childRels = new HashSet<>();
+	private Set<String> childRelsNoRefs = new HashSet<>();
 	private int subtreeSize = 1;
 	
 	// FEATURE METHODS
@@ -37,6 +40,7 @@ public class WordFeatures {
 		List<String> featList = features.get(feature);
 		return (featList != null && featList.size() > 0) ? featList.get(0) : null;
 	}
+	//TODO Move this method to WFUtil at some point
 	public String getFeatString(String feature) {
 		List<String> vals = features.get(feature);
 		if(vals == null) {
@@ -69,24 +73,21 @@ public class WordFeatures {
 			List<WordFeatures> vals = new ArrayList<>();
 			vals.add(child);
 			children.put(relation, vals);
+			childRels.add(relation);
+			if(!relation.contains(LogicalForm.REF_MARKER))
+				childRelsNoRefs.add(relation);
 		}
 	}
 	public Map<String, List<WordFeatures>> getChildren() {
 		return children;
 	}
-	/** @return List of child words related to parents through relation rel. Null if no such children. */
-	public List<WordFeatures> getChildren(String rel, boolean includeRefs) {
-		List<WordFeatures> nonrefs = children.get(rel);
-		if(nonrefs == null)
-			return null;
-		
-		List<WordFeatures> list = new ArrayList<>(nonrefs);
-		List<WordFeatures> refs = children.get(rel + LogicalForm.REF_MARKER);
-		
-		if(includeRefs && refs != null)
-			list.addAll(refs);
-		return list;
+	public Set<String> getChildRels() {
+		return childRels;
 	}
+	public Set<String> getChildRelsNoRefs() {
+		return childRelsNoRefs;
+	}
+	//TODO Replace this method with WFUtil.getChildList at some point
 	/** @return list of children not backed up by children map */
 	public List<WordFeatures> getChildList() {
 		List<WordFeatures> childList = new ArrayList<>();
@@ -95,6 +96,7 @@ public class WordFeatures {
 		}
 		return childList;
 	}
+	//TODO Move this method to WFUtil at some point
 	public List<String> getArgumentChildNames() {
 		List<String> argNames = new ArrayList<>();
 		for(int i = 0;i <= 5;i++) {
@@ -131,6 +133,7 @@ public class WordFeatures {
 		}
 		return id.equals(otherID);
 	}
+	//TODO Move this method to WFUtil at some point
 	public Object clone() {
 		WordFeatures clone = new WordFeatures();
 		clone.features = new HashMap<>(features);

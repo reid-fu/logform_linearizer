@@ -13,7 +13,7 @@ import feat_extract.LogicalForm;
 import feat_extract.WordFeatures;
 import linearizer.eng_heuristic.ChildOrderer;
 import linearizer.eng_heuristic.ChildOrders;
-import util.WordFeatUtil;
+import util.WFTestUtil;
 
 public class EngLinUnitTest {
 	private EngLinearizer uut;
@@ -32,9 +32,9 @@ public class EngLinUnitTest {
 		order.add("w2");
 		List<String> beforeParent = ChildOrderer.DEFAULT_CHILD_ORDER.subList(0, ChildOrderer.DEFAULT_CHILD_ORDER.indexOf(ChildOrderer.PARENT_REL));
 		WordFeatures current = new WordFeatures();
-		WordFeatUtil.addChildren(current, new String[] {"Arg0","Mod"},
-				new WordFeatures[] {WordFeatUtil.wordFeaturesWithID("w0"),
-						WordFeatUtil.wordFeaturesWithID("w1")});
+		WFTestUtil.addChildren(current, new String[] {"Arg0","Mod"},
+				new WordFeatures[] {WFTestUtil.wordFeaturesWithID("w0"),
+						WFTestUtil.wordFeaturesWithID("w1")});
 		
 		uut.addChildrenBeforeParent(lf, order, beforeParent, current, new HashSet<>(Arrays.asList(new String[] {"w2"})), config);
 		assertEquals(Arrays.asList(new String[] {"w0","w1","w2"}), order);
@@ -45,11 +45,11 @@ public class EngLinUnitTest {
 		List<String> order = new ArrayList<>();
 		order.add("w2");
 		List<String> beforeParent = ChildOrderer.DEFAULT_CHILD_ORDER.subList(0, ChildOrderer.DEFAULT_CHILD_ORDER.indexOf(ChildOrderer.PARENT_REL));
-		WordFeatures current = WordFeatUtil.wordFeaturesWithID("w2");
-		WordFeatures arg0 = WordFeatUtil.wordFeaturesWithID("w0");
-		WordFeatUtil.addChildren(arg0, new String[] {"Det"}, new WordFeatures[] {current});
-		WordFeatUtil.addChildren(current, new String[] {"Arg0","Mod"},
-				new WordFeatures[] {arg0, WordFeatUtil.wordFeaturesWithID("w1")});
+		WordFeatures current = WFTestUtil.wordFeaturesWithID("w2");
+		WordFeatures arg0 = WFTestUtil.wordFeaturesWithID("w0");
+		WFTestUtil.addChildren(arg0, new String[] {"Det"}, new WordFeatures[] {current});
+		WFTestUtil.addChildren(current, new String[] {"Arg0","Mod"},
+				new WordFeatures[] {arg0, WFTestUtil.wordFeaturesWithID("w1")});
 		
 		uut.addChildrenBeforeParent(lf, order, beforeParent, current, new HashSet<>(Arrays.asList(new String[] {"w2"})), config);
 		assertEquals(Arrays.asList(new String[] {"w0","w1","w2"}), order);
@@ -62,9 +62,9 @@ public class EngLinUnitTest {
 		List<String> afterParent = ChildOrderer.DEFAULT_CHILD_ORDER.subList(
 				ChildOrderer.DEFAULT_CHILD_ORDER.indexOf(ChildOrderer.PARENT_REL) + 1, ChildOrderer.DEFAULT_CHILD_ORDER.size());
 		WordFeatures current = new WordFeatures();
-		WordFeatUtil.addChildren(current, new String[] {"Arg1","Arg2"},
-				new WordFeatures[] {WordFeatUtil.wordFeaturesWithID("w2"),
-						WordFeatUtil.wordFeaturesWithID("w3")});
+		WFTestUtil.addChildren(current, new String[] {"Arg1","Arg2"},
+				new WordFeatures[] {WFTestUtil.wordFeaturesWithID("w2"),
+						WFTestUtil.wordFeaturesWithID("w3")});
 		
 		uut.addChildrenAfterParent(lf, order, afterParent, current, new HashSet<>(Arrays.asList(new String[] {"w1"})), config);
 		assertEquals(Arrays.asList(new String[] {"w1","w2","w3"}), order);
@@ -76,11 +76,11 @@ public class EngLinUnitTest {
 		order.add("w1");
 		List<String> afterParent = ChildOrderer.DEFAULT_CHILD_ORDER.subList(
 				ChildOrderer.DEFAULT_CHILD_ORDER.indexOf(ChildOrderer.PARENT_REL) + 1, ChildOrderer.DEFAULT_CHILD_ORDER.size());
-		WordFeatures current = WordFeatUtil.wordFeaturesWithID("w1");
-		WordFeatures arg2 = WordFeatUtil.wordFeaturesWithID("w3");
-		WordFeatUtil.addChildren(arg2, new String[] {"Arg0"}, new WordFeatures[] {current});
-		WordFeatUtil.addChildren(current, new String[] {"Arg1","Arg2"},
-				new WordFeatures[] {WordFeatUtil.wordFeaturesWithID("w2"), arg2});
+		WordFeatures current = WFTestUtil.wordFeaturesWithID("w1");
+		WordFeatures arg2 = WFTestUtil.wordFeaturesWithID("w3");
+		WFTestUtil.addChildren(arg2, new String[] {"Arg0"}, new WordFeatures[] {current});
+		WFTestUtil.addChildren(current, new String[] {"Arg1","Arg2"},
+				new WordFeatures[] {WFTestUtil.wordFeaturesWithID("w2"), arg2});
 		
 		uut.addChildrenAfterParent(lf, order, afterParent, current, new HashSet<>(Arrays.asList(new String[] {"w1"})), config);
 		assertEquals(Arrays.asList(new String[] {"w1","w2","w3"}), order);

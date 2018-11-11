@@ -10,7 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import feat_extract.LogicalForm;
 import feat_extract.WordFeatures;
-import util.WordFeatUtil;
+import util.WFTestUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LinTest {
@@ -23,11 +23,11 @@ public class LinTest {
 		String[] orderArr = {"(","w0","w1","w2",")"};
 		List<String> order = new ArrayList<>(Arrays.asList(orderArr));
 		WordFeatures featsw0 = new WordFeatures();
-		WordFeatUtil.addFeatures(featsw0,"id","w0","PR","Arg0");
+		WFTestUtil.addFeatures(featsw0,"id","w0","PR","Arg0");
 		WordFeatures featsw1 = new WordFeatures();
-		WordFeatUtil.addFeatures(featsw1,"id","w1");
+		WFTestUtil.addFeatures(featsw1,"id","w1");
 		WordFeatures featsw2 = new WordFeatures();
-		WordFeatUtil.addFeatures(featsw2,"id","w0","PR","Arg1");
+		WFTestUtil.addFeatures(featsw2,"id","w0","PR","Arg1");
 		
 		Mockito.when(lf.getWordFeatures("w0")).thenReturn(featsw0);
 		Mockito.when(lf.getWordFeatures("w1")).thenReturn(featsw1);

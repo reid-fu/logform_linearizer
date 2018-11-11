@@ -1,6 +1,5 @@
 package linearizer.pattern_matching;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +9,7 @@ import org.jdom2.Element;
 
 import feat_extract.LogicalForm;
 import feat_extract.LogicalFormParser;
+import feat_extract.WFUtil;
 import feat_extract.WordFeatures;
 import feat_extract.WordInfoMap;
 import feat_extract.XMLFileLoader;
@@ -42,7 +42,7 @@ public class PatternSingleSent {
 	}
 	public static String argStr(WordFeatures arg, Set<WordFeatures> visited) {
 		String str = arg.getUniqueFeature("PN");
-		List<WordFeatures> queue = new ArrayList<>(arg.getChildList());
+		List<WordFeatures> queue = WFUtil.getChildList(arg, false);
 		
 		while(!queue.isEmpty()) {
 			WordFeatures descendant = queue.remove(0);
@@ -53,7 +53,7 @@ public class PatternSingleSent {
 			}
 			
 			str += ", " + descendant.getUniqueFeature("PN");
-			queue.addAll(descendant.getChildList());
+			queue.addAll(WFUtil.getChildList(descendant, false));
 		}
 		return str;
 	}

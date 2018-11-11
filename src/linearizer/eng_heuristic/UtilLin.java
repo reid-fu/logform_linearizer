@@ -2,6 +2,7 @@ package linearizer.eng_heuristic;
 import java.util.ArrayList;
 import java.util.List;
 import feat_extract.LogicalForm;
+import feat_extract.WFUtil;
 import feat_extract.WordFeatures;
 
 public class UtilLin {
@@ -11,7 +12,7 @@ public class UtilLin {
 	 * @return List of child words with specified relation name and within specified size range. Empty list if no child words match criteria.
 	 */
 	public static List<WordFeatures> childrenWithinSizeRange(WordFeatures current, String rel, String size_range) {
-		List<WordFeatures> children = current.getChildren(rel, false);
+		List<WordFeatures> children = WFUtil.getChildren(current, rel, false);
 		if(children == null)
 			return new ArrayList<>();
 		if(size_range == null)
@@ -29,7 +30,7 @@ public class UtilLin {
 	 * @param size_range Size range by which to filter returned child words. If not null, should match regex "[0-9]+-[0-9]+".
 	 */
 	public static void removeChildrenWithinSizeRange(WordFeatures current, String rel, String size_range) {
-		List<WordFeatures> children = current.getChildren().get(rel);
+		List<WordFeatures> children = WFUtil.getChildren(current, rel, false);
 		if(children == null)
 			return;
 		
