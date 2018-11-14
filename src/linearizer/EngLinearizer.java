@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import feat_extract.LogicalForm;
+import feat_extract.WFUtil;
 import feat_extract.WordFeatures;
 import linearizer.eng_heuristic.ChildOrderer;
 import linearizer.eng_heuristic.ChildOrdererFactory;
@@ -24,6 +25,7 @@ public class EngLinearizer extends Linearizer {
 		List<String> order = addCurrentToOrderAndVisited(current, visited);
 		if(order == null)
 			return new ArrayList<String>();
+		
 		WordFeatures clone = (WordFeatures) current.clone();
 		List<String> relOrder = ordererFactory.relOrder(current);
 		List<String> beforeParent = relOrder.subList(0, relOrder.indexOf(ChildOrderer.PARENT_REL));
@@ -86,8 +88,9 @@ public class EngLinearizer extends Linearizer {
 	}
 	public List<List<String>> getRemainingChildren(LogicalForm lf, WordFeatures current, Set<String> visited, LinConfig config) {
 		List<List<String>> remChildren = new LinkedList<>();
-		for(String relation : current.getChildren().keySet()) {
-			for(WordFeatures childFeats : current.getChildren().get(relation)) {					
+		for(String relation : WFUtil.getChildRels(current, false)) {
+			List<WordFeatures> children = WFUtil.getChildren(current, relation, false);
+			for(WordFeatures childFeats : children) {					
 				List<String> childOrder = order(lf, childFeats, visited, config);
 				remChildren.add(childOrder);
 			}

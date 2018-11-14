@@ -39,16 +39,7 @@ public class WordFeatures {
 	public String getUniqueFeature(String feature) {
 		List<String> featList = features.get(feature);
 		return (featList != null && featList.size() > 0) ? featList.get(0) : null;
-	}
-	//TODO Move this method to WFUtil at some point
-	public String getFeatString(String feature) {
-		List<String> vals = features.get(feature);
-		if(vals == null) {
-			return null;
-		}
-		String featStr = vals.toString();
-		return featStr.substring(1, featStr.length()-1);
-	}
+	}	
 	public Map<String, List<String>> getFeatures() {
 		return features;
 	}
@@ -133,12 +124,13 @@ public class WordFeatures {
 		}
 		return id.equals(otherID);
 	}
-	//TODO Move this method to WFUtil at some point
 	public Object clone() {
 		WordFeatures clone = new WordFeatures();
 		clone.features = new HashMap<>(features);
 		clone.parents = new HashMap<>(parents);
 		clone.children = new HashMap<>(children);
+		clone.childRels = new HashSet<>(childRels);
+		clone.childRelsNoRefs = new HashSet<>(childRelsNoRefs);
 		return clone;
 	}
 	public String toString() {

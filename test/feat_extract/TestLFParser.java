@@ -9,37 +9,43 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import util.LFTestUtil;
+
 @RunWith(MockitoJUnitRunner.class)
-public class TestParser {
+public class TestLFParser {
 	private LogicalFormParser uut = new LogicalFormParser();
 	@Mock
 	private Element lf;
 	@Mock
 	private WordInfoMap wordInfoMap;
 	
-	// HELPER METHODS
-	public void addFeatures(WordFeatures wordFeats, String...feats) {
-		assert feats.length % 2 == 0;
-		for(int i = 0; i < feats.length; i+=2) {
-			wordFeats.addFeature(feats[i], feats[i+1]);
-		}
-	}
-	public void addParents(WordFeatures child, String rels[], WordFeatures parents[]) {
-		assert rels.length == parents.length;
-		for(int i = 0; i < rels.length; i++) {
-			child.addParent(rels[i], parents[i]);
-		}
-	}
-	public void addChildren(WordFeatures parent, String rels[], WordFeatures children[]) {
-		assert rels.length == children.length;
-		for(int i = 0; i < rels.length; i++) {
-			parent.addChild(rels[i], children[i]);
-		}
+	//Method parse
+	@Test
+	public void testParse1p1() throws Exception {
+		LogicalForm lf = LFTestUtil.getLF(1, 1);
+		WordFeatures root = lf.getHead();
+		assertEquals(1, root.getChildRels().size());
+		assertEquals(1, root.getChildRelsNoRefs().size());
+		
+		assertEquals(1, root.getChildList().size());
+		WordFeatures aux = root.getChildList().get(0);
+		assertEquals("will", aux.getUniqueFeature("PN"));
+		
+		assertEquals(2, aux.getChildList().size());
+		WordFeatures subj = WFUtil.getChildren(aux, "Arg0", false).get(0);
+		assertEquals("Pierre_Vinken", subj.getUniqueFeature("PN"));
+		WordFeatures desc = WFUtil.getChildren(subj, "ApposRel", false).get(0);
+		assertEquals("old", desc.getUniqueFeature("PN"));
+		assertEquals("[Arg1, Arg0" + LogicalForm.REF_MARKER + "]", WFUtil.getChildRels(desc, true).toString());
+		
+		WordFeatures verb = WFUtil.getChildren(aux, "Arg1", false).get(0);
+		assertEquals("join.01", verb.getUniqueFeature("PN"));
+		assertEquals("[Mod, Arg1, Arg0" + LogicalForm.REF_MARKER + "]", WFUtil.getChildRels(verb, true).toString());
+		assertEquals(2, WFUtil.getChildren(verb, "Mod", false).size());
+		assertEquals("board", WFUtil.getChildren(verb, "Arg1", false).get(0).getUniqueFeature("PN"));
 	}
 	
-	// GET OR CREATE FEATURE SETS
-	
-	// QUEUE CHILDREN TESTS
+	//Method addChildrenToQueue
 	@Test
 	public void testAddChildrenToQueueLFSingleRoot() {
 		List<Relation> queue = new ArrayList<>();
@@ -79,8 +85,7 @@ public class TestParser {
 		Element nodeChild = mock(Element.class);
 		when(nodeChild.getName()).thenReturn("node");
 		nodeChildren.add(nodeChild);
-		when(lf.getChildren("node")).thenReturn(nodeChildren);
-		
+		when(lf.getChildren("node")).thenReturn(nodeChildren);		
 		when(lf.getName()).thenReturn("node");
 		
 		// Set up rel children
@@ -101,7 +106,7 @@ public class TestParser {
 		assertEquals(rel.getParentFeats(), parentFeats);
 	}
 	
-	// EXCHANGE FEATURES TESTS
+	// EXCHANGE FEATURES TESTS TODO Move elsewhere
 //	@Test
 //	public void testExchangeFeaturesHeadParent() {
 //		LogicalForm lf = new LogicalForm("test");

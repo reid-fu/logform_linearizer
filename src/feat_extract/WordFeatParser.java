@@ -36,6 +36,7 @@ public class WordFeatParser {
 		wordFeats.addFeature("id", wordID);
 		wordFeats.addFeature("PN", getLemma(xmlNode, wordID, wordInfoMap));
 		wordFeats.addFeature("PT", wordInfoMap.getPOS(wordID));
+		
 		if(wordInfoMap.getSupertag(wordID) != null) {
 			lf.addSupertag(wordID, wordInfoMap.getSupertag(wordID));
 		}
@@ -69,9 +70,7 @@ public class WordFeatParser {
 		wordFeats.addFeature("FO", "" + xmlNode.getChildren("rel").size());
 		int numArgChildren = 0;
 		
-		for(Element rel : xmlNode.getChildren()) {
-			if(!rel.getName().equals("rel"))
-				continue;
+		for(Element rel : xmlNode.getChildren("rel")) {
 			String relName = rel.getAttributeValue("name");
 			if(relName.matches("Arg[0-9][a-z]?")) // Arg, ArgA, ArgM do not count as argument
 				numArgChildren++;

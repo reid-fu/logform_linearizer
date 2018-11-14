@@ -35,13 +35,13 @@ public class UtilLin {
 			return;
 		
 		if(size_range == null) {
-			current.getChildren().remove(rel);
+			WFUtil.removeChildren(current, rel, false);
 		} else {
 			int lowBound = Integer.parseInt(size_range.substring(0, size_range.indexOf("-")));
 			int highBound = Integer.parseInt(size_range.substring(size_range.indexOf("-") + 1));
 			children.removeIf(feats -> feats.getSubtreeSize() >= lowBound && feats.getSubtreeSize() <= highBound);
 			if(children.size() == 0)
-				current.getChildren().remove(rel);
+				WFUtil.removeChildren(current, rel, false);
 		}
 	}
 	/** @param lf Logical form

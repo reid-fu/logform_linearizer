@@ -38,4 +38,25 @@ public class WFUtil {
 		}
 		return childList;
 	}
+	/** @return String representation of values that word has for feature */
+	public static String getFeatString(WordFeatures word, String feature) {
+		List<String> vals = word.getFeature(feature);
+		if(vals == null) {
+			return null;
+		}
+		String featStr = vals.toString();
+		return featStr.substring(1, featStr.length()-1);
+	}
+	/** Removes relation and associated children from word */
+	public static void removeChildren(WordFeatures word, String rel, boolean includeRefs) {
+		if(word.getChildren().containsKey(rel)) {
+			word.getChildren().remove(rel);
+			word.getChildRels().remove(rel);
+			word.getChildRelsNoRefs().remove(rel);
+		}
+		if(includeRefs && word.getChildren().containsKey(rel + LogicalForm.REF_MARKER)) {
+			word.getChildren().remove(rel + LogicalForm.REF_MARKER);
+			word.getChildRels().remove(rel + LogicalForm.REF_MARKER);
+		}
+	}
 }
