@@ -11,6 +11,7 @@ import feat_extract.WordInfoMap;
 import feat_extract.XMLFileLoader;
 import feat_print.AnnotSeqPrinter;
 import linearizer.eng_heuristic.ChildOrders;
+import util.LFTestUtil;
 
 public class EngLinSingleSent {
 	public static final String TEST_FILE = "/home/reid/projects/research/ccg/openccg/ccgbank/extract/test/test.xml";
@@ -28,8 +29,9 @@ public class EngLinSingleSent {
 		String sent_text = item.getAttributeValue("string");
 		
 		LogicalForm sentence = parser.parse(sent_text, lf, wordInfo);
+		sentence = LFTestUtil.getLF(83, 15);
 		List<String> engOrder = uut.getOrder(sentence, sentence.getHead(), new HashSet<String>(), config);
-		System.out.println(sent_text);
+		System.out.println(sentence.getSentence());
 		System.out.println(printer.wordsInOrderOfID(sentence, engOrder));
 	}
 }

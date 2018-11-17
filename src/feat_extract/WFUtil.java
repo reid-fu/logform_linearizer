@@ -6,15 +6,16 @@ import java.util.Set;
 public class WFUtil {
 	/** @return List of child words related to parent word through relation rel. Null if no such children. */
 	public static List<WordFeatures> getChildren(WordFeatures word, String rel, boolean includeRefs) {
-		List<WordFeatures> nonrefs = word.getChildren().get(rel);
-		if(nonrefs == null)
+		List<WordFeatures> nonrefs = word.getChildren().get(rel);		
+		List<WordFeatures> list = (nonrefs == null) ? new ArrayList<>() : new ArrayList<>(nonrefs);
+		
+		if(includeRefs) {
+			List<WordFeatures> refs = word.getChildren().get(rel + LogicalForm.REF_MARKER);
+			if(refs != null)
+				list.addAll(refs);
+		}
+		if(list.size() == 0)
 			return null;
-		
-		List<WordFeatures> list = new ArrayList<>(nonrefs);
-		List<WordFeatures> refs = word.getChildren().get(rel + LogicalForm.REF_MARKER);
-		
-		if(includeRefs && refs != null)
-			list.addAll(refs);
 		return list;
 	}
 	/** @param word Node representing parent word

@@ -31,10 +31,10 @@ public class TestWFUtil {
 		WordFeatures parent = WFTestUtil.wordFeaturesWithID("w0");
 		WordFeatures refChild = WFTestUtil.wordFeaturesWithID("w1");
 		WordFeatures norefChild = WFTestUtil.wordFeaturesWithID("w2");
-		WFTestUtil.addChildren(parent, new String[] {"Arg" + LogicalForm.REF_MARKER, "Arg"}, new WordFeatures[] {refChild, norefChild});
+		WFTestUtil.addChildren(parent, new String[] {"Arg" + LogicalForm.REF_MARKER, "Arg0"}, new WordFeatures[] {refChild, norefChild});
 		
 		List<WordFeatures> children = WFUtil.getChildren(parent, "Arg", true);
-		assertEquals(Arrays.asList(new WordFeatures[] {norefChild, refChild}), children);
+		assertEquals(Arrays.asList(new WordFeatures[] {refChild}), children);
 	}
 	
 	//Method getChildRels

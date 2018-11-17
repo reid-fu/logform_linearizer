@@ -19,6 +19,7 @@ public class WordFeatures {
 	private Set<String> childRels = new HashSet<>();
 	private Set<String> childRelsNoRefs = new HashSet<>();
 	private int subtreeSize = 1;
+	private boolean isSharedArg = false;
 	
 	// FEATURE METHODS
 	public void addFeature(String feature, String value) {
@@ -98,7 +99,7 @@ public class WordFeatures {
 		return argNames;
 	}
 	
-	// SUBTREE METHODS
+	// METHODS FOR OTHER FIELDS
 	/** Adds specified amount to subtreeSize */
 	public void updateSubtreeCount(int increase) {
 		subtreeSize += increase;
@@ -106,8 +107,14 @@ public class WordFeatures {
 	public int getSubtreeSize() {
 		return subtreeSize;
 	}
+	public void markAsSharedArg() {
+		isSharedArg = true;
+	}
+	public boolean isSharedArg() {
+		return isSharedArg;
+	}
 	
-	// OTHER METHODS
+	// METHODS INHERITED FROM OBJECT
 	public boolean equals(Object obj) {
 		if(!(obj instanceof WordFeatures)) {
 			return false;

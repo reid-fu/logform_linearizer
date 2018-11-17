@@ -1,4 +1,5 @@
 package linearizer;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -15,6 +16,7 @@ import main.Exceptions.CCGXMLParseException;
 
 public class EngLinIntegTest {
 	public static final String TEST_DIR = "/home/reid/projects/research/ccg/openccg/ccgbank/extract/test/00";
+	public static final String MATCH_FILE = "/home/reid/projects/research/ccg/logform_linearizer/englin_output/match.txt";
 	private XMLFileLoader loader = new XMLFileLoader();
 	private EngLinearizer uut = new EngLinearizer();
 	private OracleLinearizer ref = new OracleLinearizer();
@@ -26,7 +28,8 @@ public class EngLinIntegTest {
 		LogicalFormParser parser = new LogicalFormParser();
 		AnnotSeqPrinter printer = new AnnotSeqPrinter();
 		int exactMatches = 0;
-		List<String> nonmatches = new ArrayList<>();
+		List<String> nonmatches = new ArrayList<>();		
+		PrintWriter matchPrinter = new PrintWriter(MATCH_FILE);
 		
 		for(Element item : logForms) {
 			try {
@@ -40,6 +43,7 @@ public class EngLinIntegTest {
 				
 				if(engOrder.equals(oracleOrder)) {
 					exactMatches++;
+					matchPrinter.println(sentence.getSentence());
 				} else if(nonmatches.size() < 50) {
 					nonmatches.add(sent_text + "\t\t" + printer.wordsInOrderOfID(sentence, engOrder));
 				}
@@ -47,6 +51,7 @@ public class EngLinIntegTest {
 				e.printSkipMessage();
 			}
 		}
+		matchPrinter.close();
 		System.out.println("Exact matches: " + exactMatches);
 		@SuppressWarnings("unused")
 		int numPrinted = 0;

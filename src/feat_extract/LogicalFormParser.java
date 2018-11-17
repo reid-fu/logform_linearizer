@@ -32,6 +32,8 @@ public class LogicalFormParser {
 				String relName = ref ? r.getName() + LogicalForm.REF_MARKER : r.getName();
 				r.getParentFeats().addChild(relName, wordFeats);
 				wordFeats.addParent(relName, r.getParentFeats());
+			} else {
+				wordFeats.markAsSharedArg();
 			}
 			addChildrenToQueue(queue, r.getChildXML(), wordFeats);
 		}

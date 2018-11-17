@@ -1,6 +1,8 @@
 package feat_extract;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.jdom2.Element;
@@ -43,6 +45,21 @@ public class TestLFParser {
 		assertEquals("[Mod, Arg1, Arg0" + LogicalForm.REF_MARKER + "]", WFUtil.getChildRels(verb, true).toString());
 		assertEquals(2, WFUtil.getChildren(verb, "Mod", false).size());
 		assertEquals("board", WFUtil.getChildren(verb, "Arg1", false).get(0).getUniqueFeature("PN"));
+	}
+	@Test
+	public void testParse7p4() throws Exception {
+		LogicalForm lf = LFTestUtil.getLF(7, 4);
+		WordFeatures root = lf.getHead().getChildList().get(0);
+		assertEquals("and", root.getUniqueFeature("PN"));
+		
+		WordFeatures first = WFUtil.getChildren(root, "First", false).get(0);
+		assertEquals("employ.01", first.getUniqueFeature("PN"));
+		WordFeatures next = WFUtil.getChildren(root, "Next", false).get(0);
+		assertEquals("have.03", next.getUniqueFeature("PN"));
+		
+		WordFeatures sharedArg = WFUtil.getChildren(first, "Arg0", true).get(0);
+		assertEquals("it", sharedArg.getUniqueFeature("PN"));
+		assertTrue(sharedArg.isSharedArg());
 	}
 	
 	//Method addChildrenToQueue
