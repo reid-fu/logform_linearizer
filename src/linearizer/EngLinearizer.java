@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import feat_extract.LogicalForm;
@@ -44,8 +45,17 @@ public class EngLinearizer extends Linearizer {
 			String rel = beforeParent.get(i);
 			String rel_type = rel.contains(":") ? rel.substring(0, rel.indexOf(":")) : rel;
 			String size_range = rel.contains(":") ? rel.substring(rel.indexOf(":") + 1) : null;
+			
 			List<WordFeatures> children = UtilLin.childrenWithinSizeRange(current, rel_type, size_range);
 			UtilLin.removeChildrenWithinSizeRange(current, rel_type, size_range);
+			if(rel_type.equals("Arg0")) {
+				Map<String,WordFeatures> sharedArg = UtilLin.sharedArgChild(current);
+				if(sharedArg != null) {
+					String refRel = sharedArg.keySet().iterator().next();
+					WordFeatures refChild = sharedArg.get(refRel);
+					children.add(refChild);
+				}
+			}
 			
 			for(WordFeatures child : children) {
 				List<String> childOrder = order(lf, child, visited, config);
@@ -60,6 +70,7 @@ public class EngLinearizer extends Linearizer {
 			String rel = afterParent.get(i);
 			String rel_type = rel.contains(":") ? rel.substring(0, rel.indexOf(":")) : rel;
 			String size_range = rel.contains(":") ? rel.substring(rel.indexOf(":") + 1) : null;
+			
 			List<WordFeatures> children = UtilLin.childrenWithinSizeRange(current, rel_type, size_range);
 			UtilLin.removeChildrenWithinSizeRange(current, rel_type, size_range);
 			

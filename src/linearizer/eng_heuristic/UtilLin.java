@@ -1,6 +1,11 @@
 package linearizer.eng_heuristic;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import feat_extract.LogicalForm;
 import feat_extract.WFUtil;
 import feat_extract.WordFeatures;
@@ -43,6 +48,24 @@ public class UtilLin {
 			if(children.size() == 0)
 				WFUtil.removeChildren(current, rel, false);
 		}
+	}
+	/** @return Map containing single relation-word pair that represents shared argument child of current.
+	 * If no shared argument child exists, returns null. */
+	public static Map<String,WordFeatures> sharedArgChild(WordFeatures current) {
+		Set<String> refRels = new HashSet<>(WFUtil.getChildRels(current, true));
+		refRels.removeAll(WFUtil.getChildRels(current, false));
+		
+		for(String rel : refRels) {
+			List<WordFeatures> children = WFUtil.getChildren(current, rel, false);
+			for(WordFeatures child : children) {
+				if(child.isSharedArg()) {
+					Map<String,WordFeatures> sharedArg = new HashMap<>();
+					sharedArg.put(rel, child);
+					return sharedArg;
+				}
+			}
+		}
+		return null;
 	}
 	/** @param lf Logical form
 	 * @param wordIDs ID's used to look up words in logical form

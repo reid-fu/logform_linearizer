@@ -49,7 +49,7 @@ public class LogicalFormParser {
 		// Process <node> children
 		List<Element> nodeChildren = parent.getChildren("node");
 		for(Element child : nodeChildren) {
-			if(parent.getName().equals("lf")) {
+			if(parent.getName().equals("lf")) { // Root(s) of logical form
 				assert parentFeatures.equals(WordFeatures.HEAD);
 				queue.add(new Relation(child, parentFeatures, "None"));
 			} else { // Parent word is coordinating conjunction and child word represents shared argument
