@@ -29,7 +29,7 @@ public class EngLinSingleSent {
 		String sent_text = item.getAttributeValue("string");
 		
 		LogicalForm sentence = parser.parse(sent_text, lf, wordInfo);
-		sentence = LFTestUtil.getLF(15, 15);
+		sentence = LFTestUtil.getLF(83, 15);
 		List<String> engOrder = uut.getOrder(sentence, sentence.getHead(), new HashSet<String>(), config);
 		System.out.println(sentence.getSentence());
 		System.out.println(printer.wordsInOrderOfID(sentence, engOrder));

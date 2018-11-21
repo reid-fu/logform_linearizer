@@ -20,8 +20,7 @@ public class ArgSeparator {
 	 * @return Verb and verb arguments in sentence
 	 * @throws NoMoodException If root of lf has no "mood" attribute
 	 */
-	public Map<String,WordFeatures> verbAndArgs(LogicalForm lf) throws NoMoodException {
-		SentType sentType = SentTypeDeterminer.sentType(lf);
+	public Map<String,WordFeatures> verbAndArgs(LogicalForm lf, SentType sentType) throws NoMoodException {
 		if(sentType == null) {
 			return null;
 		} else if(sentType == SentType.DECLARATIVE) {

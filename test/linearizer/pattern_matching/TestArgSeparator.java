@@ -7,6 +7,7 @@ import java.util.Set;
 import org.junit.Test;
 import feat_extract.LogicalForm;
 import feat_extract.WordFeatures;
+import linearizer.pattern_matching.SentTypeDeterminer.SentType;
 import util.LFTestUtil;
 import util.WFTestUtil;
 
@@ -16,7 +17,8 @@ public class TestArgSeparator {
 	@Test
 	public void testSVO() throws Exception {
 		LogicalForm lf = LFTestUtil.getLF(3, 2);
-		Map<String,WordFeatures> verbAndArgs = uut.verbAndArgs(lf);
+		SentType sentType = SentTypeDeterminer.sentType(lf);
+		Map<String,WordFeatures> verbAndArgs = uut.verbAndArgs(lf, sentType);
 		Set<String> expKeySet = WFTestUtil.strSet("Mod", "Mod.1", "Arg1", "Arg0", "verb", "ElabRel");
 		assertEquals(expKeySet, verbAndArgs.keySet());
 		assertEquals("fiber", verbAndArgs.get("Arg0").getUniqueFeature("PN"));
@@ -26,7 +28,8 @@ public class TestArgSeparator {
 	@Test
 	public void testCompoundVerbSVO() throws Exception {
 		LogicalForm lf = LFTestUtil.getLF(3, 3);
-		Map<String,WordFeatures> verbAndArgs = uut.verbAndArgs(lf);
+		SentType sentType = SentTypeDeterminer.sentType(lf);
+		Map<String,WordFeatures> verbAndArgs = uut.verbAndArgs(lf, sentType);
 		Set<String> expKeySet = WFTestUtil.strSet("Mod", "Mod.1", "Arg1", "Arg0", "verb", "aux");
 		assertEquals(expKeySet, verbAndArgs.keySet());
 		assertEquals("Lorillard_Inc.", verbAndArgs.get("Arg0").getUniqueFeature("PN"));
