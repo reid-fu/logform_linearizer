@@ -60,4 +60,22 @@ public class WFUtil {
 			word.getChildRels().remove(rel + LogicalForm.REF_MARKER);
 		}
 	}
+	/** @return String representation of subtree with root as word */
+	public static String subtreeStr(WordFeatures word, Set<WordFeatures> visited) {
+		String str = word.getUniqueFeature("PN");
+		List<WordFeatures> queue = getChildList(word, false);
+		
+		while(!queue.isEmpty()) {
+			WordFeatures descendant = queue.remove(0);
+			if(visited.contains(descendant)) {
+				continue;
+			} else {
+				visited.add(descendant);
+			}
+			
+			str += ", " + descendant.getUniqueFeature("PN");
+			queue.addAll(getChildList(descendant, false));
+		}
+		return str;
+	}
 }

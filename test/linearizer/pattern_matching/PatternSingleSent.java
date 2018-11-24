@@ -1,7 +1,6 @@
 package linearizer.pattern_matching;
 import java.io.File;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -38,25 +37,8 @@ public class PatternSingleSent {
 				System.out.println(role + ": " + verbArgs.get(role).getUniqueFeature("PN"));
 				visited.add(verbArgs.get(role));
 			} else {
-				System.out.println(role + ": " + argStr(verbArgs.get(role), visited));
+				System.out.println(role + ": " + WFUtil.subtreeStr(verbArgs.get(role), visited));
 			}
 		}
-	}
-	public static String argStr(WordFeatures arg, Set<WordFeatures> visited) {
-		String str = arg.getUniqueFeature("PN");
-		List<WordFeatures> queue = WFUtil.getChildList(arg, false);
-		
-		while(!queue.isEmpty()) {
-			WordFeatures descendant = queue.remove(0);
-			if(visited.contains(descendant)) {
-				continue;
-			} else {
-				visited.add(descendant);
-			}
-			
-			str += ", " + descendant.getUniqueFeature("PN");
-			queue.addAll(WFUtil.getChildList(descendant, false));
-		}
-		return str;
 	}
 }
