@@ -57,7 +57,10 @@ public class BLEUBatchTest {
 	public static double batchBLEU(List<String> refBatch, List<String> testBatch) throws Exception {
 		double bleu = 0;
 		for(int i = 0;i < refBatch.size();i++) {
-			bleu += sentenceBLEU(refBatch.get(i), testBatch.get(i));
+			double sentBleu = sentenceBLEU(refBatch.get(i), testBatch.get(i));
+			bleu += sentBleu;
+			System.out.printf("%5.4f\n", sentBleu);
+//			System.out.printf("%5.4f\t%s\t%s\n", sentBleu, refBatch.get(i), testBatch.get(i));
 		}
 		return bleu / refBatch.size();
 	}

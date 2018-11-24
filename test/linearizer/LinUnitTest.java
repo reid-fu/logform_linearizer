@@ -10,10 +10,11 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import feat_extract.LogicalForm;
 import feat_extract.WordFeatures;
+import unused.DFSLinearizer;
 import util.WFTestUtil;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LinTest {
+public class LinUnitTest {
 	@Mock
 	private LogicalForm lf;
 	private Linearizer uut = new DFSLinearizer();

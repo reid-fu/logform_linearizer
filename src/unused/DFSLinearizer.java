@@ -1,10 +1,12 @@
-package linearizer;
+package unused;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import feat_extract.LogicalForm;
 import feat_extract.WordFeatures;
+import linearizer.LinConfig;
+import linearizer.Linearizer;
 
 public class DFSLinearizer extends Linearizer {
 //	public List<String> order(Element lfSubtree, boolean parens) {
