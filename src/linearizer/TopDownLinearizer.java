@@ -7,7 +7,9 @@ import feat_extract.WordFeatures;
 import linearizer.pattern_matching.*;
 
 public class TopDownLinearizer extends Linearizer {
+	@SuppressWarnings("unused")
 	private ArgSeparator argSep = new ArgSeparator();
+	@SuppressWarnings("unused")
 	private ArgLabeler argLabel = new ArgLabeler();
 	
 	@Override

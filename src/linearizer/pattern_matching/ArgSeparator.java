@@ -36,7 +36,7 @@ public class ArgSeparator {
 		Map<String,WordFeatures> verbAndArgs = new HashMap<>();
 		WordFeatures root = WFUtil.getChildList(lf.getHead(), true).get(0);
 		
-		boolean auxVerb = ArgUtil.isAuxVerb(root);
+		boolean auxVerb = WFPatternUtil.isAuxVerb(root);
 		if(auxVerb) {
 			verbAndArgs.put(AUX_VERB_KEY, root);
 		} else {
@@ -45,7 +45,7 @@ public class ArgSeparator {
 		
 		addVerbArguments(verbAndArgs, root);
 		if(auxVerb) {
-			WordFeatures mainVerb = ArgUtil.mainVerb(root);
+			WordFeatures mainVerb = WFPatternUtil.mainVerb(root);
 			verbAndArgs.values().remove(mainVerb);
 			verbAndArgs.put(VERB_KEY, mainVerb);
 			addVerbArguments(verbAndArgs, mainVerb);

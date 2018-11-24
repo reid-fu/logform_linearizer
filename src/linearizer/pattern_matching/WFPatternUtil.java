@@ -6,7 +6,7 @@ import java.util.Set;
 
 import feat_extract.WordFeatures;
 
-public class ArgUtil {
+public class WFPatternUtil {
 	/** Lemmas used to explicitly mark certain types of auxiliary verbs:<br/>
 	 * PASS marks auxiliary form of "be" used in passive voice<br/>
 	 * PERF marks auxiliary form of "have" used in perfect tense<br/>
