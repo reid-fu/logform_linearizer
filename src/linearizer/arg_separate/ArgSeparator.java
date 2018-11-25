@@ -1,4 +1,4 @@
-package linearizer.pattern_matching;
+package linearizer.arg_separate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,7 +8,7 @@ import java.util.Set;
 import feat_extract.LogicalForm;
 import feat_extract.WFUtil;
 import feat_extract.WordFeatures;
-import linearizer.pattern_matching.SentTypeDeterminer.SentType;
+import linearizer.pattern_matching.WFPatternUtil;
 import main.Exceptions.NoMoodException;
 
 public class ArgSeparator {
@@ -20,19 +20,7 @@ public class ArgSeparator {
 	 * @return Verb and verb arguments in sentence
 	 * @throws NoMoodException If root of lf has no "mood" attribute
 	 */
-	public Map<String,WordFeatures> verbAndArgs(LogicalForm lf, SentType sentType) throws NoMoodException {
-		if(sentType == null) {
-			return null;
-		} else if(sentType == SentType.DECLARATIVE) {
-			return verbAndArgsDcl(lf);
-		} else if(sentType == SentType.QUESTION) {
-			return verbAndArgsInt(lf);
-		} else {
-			return verbAndArgsImp(lf);
-		}
-	}
-	
-	public Map<String,WordFeatures> verbAndArgsDcl(LogicalForm lf) {
+	public Map<String,WordFeatures> verbAndArgs(LogicalForm lf) {
 		Map<String,WordFeatures> verbAndArgs = new HashMap<>();
 		WordFeatures root = WFUtil.getChildList(lf.getHead(), true).get(0);
 		
@@ -66,12 +54,5 @@ public class ArgSeparator {
 				}
 			}
 		}
-	}
-	
-	public Map<String,WordFeatures> verbAndArgsInt(LogicalForm lf) {
-		return null;
-	}
-	public Map<String,WordFeatures> verbAndArgsImp(LogicalForm lf) {
-		return null;
 	}
 }

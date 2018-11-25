@@ -12,7 +12,9 @@ import feat_extract.WFUtil;
 import feat_extract.WordFeatures;
 import feat_extract.WordInfoMap;
 import feat_extract.XMLFileLoader;
+import linearizer.arg_separate.ArgSeparator;
 import linearizer.pattern_matching.SentTypeDeterminer.SentType;
+import main.Exceptions;
 
 public class PatternSingleSent {
 	public static final String TEST_FILE = "/home/reid/projects/research/ccg/openccg/ccgbank/extract/test/test.xml";
@@ -29,7 +31,9 @@ public class PatternSingleSent {
 		
 		LogicalForm sentence = parser.parse(sent_text, lf, wordInfo);
 		SentType sentType = SentTypeDeterminer.sentType(sentence);
-		Map<String,WordFeatures> verbArgs = uut.verbAndArgs(sentence, sentType);
+		if(sentType == null)
+			throw new Exceptions.NoMoodException(sent_text);
+		Map<String,WordFeatures> verbArgs = uut.verbAndArgs(sentence);
 		Set<WordFeatures> visited = new HashSet<>();
 		
 		for(String role : verbArgs.keySet()) {

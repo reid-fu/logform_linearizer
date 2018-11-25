@@ -4,6 +4,7 @@ import java.util.Set;
 
 import feat_extract.LogicalForm;
 import feat_extract.WordFeatures;
+import linearizer.arg_separate.ArgSeparator;
 import linearizer.pattern_matching.*;
 
 public class TopDownLinearizer extends Linearizer {

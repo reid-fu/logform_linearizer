@@ -6,6 +6,7 @@ import java.util.Map;
 import feat_extract.LogicalForm;
 import feat_extract.WFUtil;
 import feat_extract.WordFeatures;
+import linearizer.arg_separate.ArgSeparator;
 import linearizer.pattern_matching.SentTypeDeterminer.SentType;
 import util.LFTestUtil;
 
@@ -24,7 +25,7 @@ public class TestArgLabeler {
 				System.out.println();
 				continue;
 			}
-			Map<String,WordFeatures> verbAndArgs = argSep.verbAndArgs(lf, sentType);
+			Map<String,WordFeatures> verbAndArgs = argSep.verbAndArgs(lf);
 			WordFeatures subj = uut.getSubj(verbAndArgs, sentType);
 			
 			if(subj == null) {
